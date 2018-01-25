@@ -1,0 +1,199 @@
+<% include header.html %>
+<div class="container">
+    <form class="form-auction">
+        <div id="dados">
+      <h4 class="form-auction-heading text-center">Dados do leilão</h2>
+      <div class="form-group">
+          <label for="valorInicial" class="font-weight-bold">Valor inicial:</label>
+          <input type="text" class="form-control form-control-sm money" id="valorInicial" placeholder="R$ 0,00" required autofocus>
+          <label id="lbValorInicial" class="d-none"></label>
+        </div>
+      <div class="form-group">
+          <label for="despesas" class="font-weight-bold">Despesas:</label>
+          <input type="text" class="form-control form-control-sm money" id="despesas" placeholder="R$ 0,00" required>
+          <label id="lbDespesas" class="d-none"></label>
+        </div>
+      <div class="form-group">
+          <label for="percentualDoLeiloeiro" class="font-weight-bold">Percentual do leiloeiro:</label>
+          <input type="text" class="form-control form-control-sm percentage" id="percentualDoLeiloeiro" placeholder="0%" required>
+          <input type="hidden" class="form-control form-control-sm money" id="txLeiloeiro">
+          <label id="lbPercentualDoLeiloeiro" class="d-none"></label>
+        </div>
+        <div class="form-group">
+          <label for="lancoMinimo" class="font-weight-bold">Lanço mínimo:</label>
+          <input type="text" class="form-control form-control-sm money" id="lancoMinimo" placeholder="R$ 0,00" required>
+          <label id="lbLancoMinimo" class="d-none"></label>
+        </div>
+        <div class="form-group">
+          <label for="estado" class="font-weight-bold">Estado:</label>
+          <select class="form-control form-control-sm" name="estados" id="estado">
+              <option value="AC">Acre</option>
+              <option value="AL">Alagoas</option>
+              <option value="AP">Amapá</option>
+              <option value="AM">Amazonas</option>
+              <option value="BA">Bahia</option>
+              <option value="CE">Ceará</option>
+              <option value="DF">Distrito Federal</option>
+              <option value="ES">Espírito Santo</option>
+              <option value="GO">Goiás</option>
+              <option value="MA">Maranhão</option>
+              <option value="MT">Mato Grosso</option>
+              <option value="MS">Mato Grosso do Sul</option>
+              <option value="MG">Minas Gerais</option>
+              <option value="PA">Pará</option>
+              <option value="PB">Paraíba</option>
+              <option value="PR">Paraná</option>
+              <option value="PE">Pernambuco</option>
+              <option value="PI">Piauí</option>
+              <option value="RJ">Rio de Janeiro</option>
+              <option value="RN" selected>Rio Grande do Norte</option>
+              <option value="RS">Rio Grande do Sul</option>
+              <option value="RO">Rondônia</option>
+              <option value="RR">Roraima</option>
+              <option value="SC">Santa Catarina</option>
+              <option value="SP">São Paulo</option>
+              <option value="SE">Sergipe</option>
+              <option value="TO">Tocantins</option>
+          </select>
+          <label id="lbEstado" class="d-none"></label>
+          <input type="hidden" class="form-control form-control-sm money" id="imposto">
+      </div>
+      
+      <button id="btnRegistrar" class="btn btn-sm btn-primary btn-block" type="submit">Registrar</button>
+      </div>
+
+      <div id="lancos" class="d-none">
+          <hr />
+
+          <div class="form-group">
+                  <label for="lancoLivre" class="font-weight-bold">Lanço livre:</label>
+
+              <div class="form-row">
+                  <div class="col">
+                      <input type="text" class="form-control form-control-sm money" id="lancoLivre" placeholder="R$ 0,00" />
+                  </div>
+                  <div class="col align-items-end">
+                        <button id="btnLancoLivre" class="btn btn-sm btn-primary btn-block" type="submit">Lanço livre</button>
+                  </div>
+                </div>
+          </div>
+
+            <button id="btnLancoMinimo" class="btn btn-sm btn-primary btn-block" type="submit">Lanço mínimo</button>
+            <input type="hidden" class="form-control form-control-sm money" id="totalLancos" value="0">
+
+      </div> <!-- /lancos -->
+
+      <div id="detalhes" class="d-none">
+            <hr />
+
+          <label id="lbTxLeiloeiro"></label><br />
+          <label id="lbImposto"></label><br />
+          <label id="lbTotalLancos"></label><br />
+          <label id="lbTotal" class="font-weight-bold"></label>
+          <input type="hidden" class="form-control form-control-sm money" id="total">
+      </div>
+
+    </form>
+
+  </div> <!-- /container -->
+  
+  <script src="/assets/js/vendor/jquery.maskMoney.min.js" type="text/javascript"></script>
+  <script>
+      $(document).ready(function(){
+          $(".money").maskMoney({
+              prefix: "R$ ",
+               decimal: ",",
+               thousands: "."
+          });
+          $(".percentage").maskMoney({
+              suffix: "%",
+               decimal: "",
+               thousands: "",
+               precision: 0
+          });
+          $(".money, .percentage").maskMoney('mask', $(this).val());
+          $("#btnRegistrar").click(function(e){
+              e.preventDefault();
+
+              $("#lbValorInicial").text($("#valorInicial").val());
+              $("#lbValorInicial").removeClass("d-none");
+              $("#valorInicial").addClass("d-none");
+
+              $("#lbDespesas").text($("#despesas").val());
+              $("#lbDespesas").removeClass("d-none");
+              $("#despesas").addClass("d-none");
+
+              $("#lbLancoMinimo").text($("#lancoMinimo").val());
+              $("#lbLancoMinimo").removeClass("d-none");
+              $("#lancoMinimo").addClass("d-none");
+
+              $("#lbPercentualDoLeiloeiro").text($("#percentualDoLeiloeiro").val());
+              $("#lbPercentualDoLeiloeiro").removeClass("d-none");
+              $("#percentualDoLeiloeiro").addClass("d-none"); 			
+
+              $("#lbEstado").text($("#estado option:selected").text() + " (ICMS: 18%) ");
+              $("#lbEstado").removeClass("d-none");
+              $("#estado").addClass("d-none");
+              
+              $("#btnRegistrar").addClass("d-none");
+              
+              $("#dados .form-group").removeClass("form-group");
+              
+              $("#btnLancoMinimo").text("Lanço mínimo " + $("#lancoMinimo").val());
+              
+              var valorInicial = $("#valorInicial").maskMoney('unmasked')[0];
+              var despesas = $("#despesas").maskMoney('unmasked')[0];
+              var percentualDoLeiloeiro = $("#percentualDoLeiloeiro").maskMoney('unmasked')[0];
+              var totalLancos = $("#totalLancos").maskMoney('unmasked')[0];
+              
+              var valorInicialComDespesas = valorInicial + despesas;
+              var txLeiloeiro = valorInicialComDespesas * (percentualDoLeiloeiro/10);
+              var imposto = valorInicialComDespesas * 0.18;
+              var total = valorInicialComDespesas + txLeiloeiro + imposto;
+              
+              $("#txLeiloeiro").maskMoney('mask', txLeiloeiro);
+              $("#lbTxLeiloeiro").text($("#txLeiloeiro").val() + " do leiloeiro");
+              
+              $("#imposto").maskMoney('mask', imposto);
+              $("#lbImposto").text($("#imposto").val() + " de imposto");
+
+              $("#lbTotalLancos").text($("#totalLancos").val() +  " de lanços");
+
+              $("#total").maskMoney('mask', total);
+              $("#lbTotal").text("Total de " + $("#total").val());
+              
+              $("#lancos, #detalhes").removeClass("d-none");
+          });
+          $("#btnLancoMinimo").click(function(e){
+              e.preventDefault();
+
+              var lancoMinimo = $("#lancoMinimo").maskMoney('unmasked')[0];
+              var totalLancos = $("#totalLancos").maskMoney('unmasked')[0] + lancoMinimo;
+
+              $("#totalLancos").maskMoney('mask', totalLancos);
+              
+              var valorInicial = $("#valorInicial").maskMoney('unmasked')[0];
+              var despesas = $("#despesas").maskMoney('unmasked')[0];
+              var percentualDoLeiloeiro = $("#percentualDoLeiloeiro").maskMoney('unmasked')[0];
+              var totalLancos = $("#totalLancos").maskMoney('unmasked')[0];
+              
+              var valorInicialComDespesas = valorInicial + despesas + totalLancos;
+              var txLeiloeiro = valorInicialComDespesas * (percentualDoLeiloeiro/10);
+              var imposto = valorInicialComDespesas * 0.18;
+              var total = valorInicialComDespesas + txLeiloeiro + imposto;
+              
+              $("#txLeiloeiro").maskMoney('mask', txLeiloeiro);
+              $("#lbTxLeiloeiro").text($("#txLeiloeiro").val() + " do leiloeiro");
+              
+              $("#imposto").maskMoney('mask', imposto);
+              $("#lbImposto").text($("#imposto").val() + " de imposto");
+
+              $("#lbTotalLancos").text($("#totalLancos").val() +  " de lanços");
+
+              $("#total").maskMoney('mask', total);
+              $("#lbTotal").text("Total de " + $("#total").val());
+
+          });
+      });
+  </script>
+<% include footer.html %>

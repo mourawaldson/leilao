@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+
+"use strict";
+
+let debug = require('debug')('leilao:server');
+
+const cluster = require('cluster');
+
+if (cluster.isMaster) {
+    const numCPUs = require('os').cpus().length;
+
+    // Fork workers.
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('online', (worker, code, signal) => {
+        debug(`worker ${worker.process.pid} is online`);
+    });
+
+    cluster.on('exit', (worker, code, signal) => {
+        debug(`worker ${worker.process.pid} died`);
+    });
+} else {
+    let app = require('../app'),
+        port = process.env.PORT || 3000;
+
+    app.set('port', port);
+
+    let server = app.listen(port);
+
+    server.on('listening', () => {
+        "use strict";
+        let addr = server.address(),
+            bind = (typeof addr === 'string') ? 'pipe ' + addr : 'port ' + addr.port;
+        debug(`Listening on ${bind}`);
+    });
+
+    server.on('error', () => {
+        "use strict";
+        if (error.syscall !== 'listen') {
+            throw error;
+        }
+
+        let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+
+        // handle specific listen errors with friendly messages
+        switch (error.code) {
+            case 'EACCES':
+                console.error(`${bind} requires elevated privileges`);
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error(`${bind} is already in use`);
+                process.exit(1);
+                break;
+            default:
+                throw error;
+        }
+    });
+}

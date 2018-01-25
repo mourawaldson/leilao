@@ -1,0 +1,58 @@
+{
+  "name": "leilao",
+  "version": "1.0.0",
+  "description": "Leilão!",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node ./bin/www",
+    "nodemon": "nodemon ./bin/www",
+    "debug-unix": "DEBUG=leilao:* & npm start",
+    "debug-win": "set DEBUG=leilao:* & npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mourawaldson/leilao.git"
+  },
+  "keywords": [
+    "leilao",
+    "leilão"
+  ],
+  "author": "Waldson Moura <mourawaldson@gmail.com> (https://github.com/mourawaldson)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/mourawaldson/leilao/issues"
+  },
+  "homepage": "https://github.com/mourawaldson/leilao#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "cookie-parser": "~1.4.*",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "helmet": "^3.10.0",
+    "moment": "^2.20.1",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "passport": "^0.4.0",
+    "serve-favicon": "^2.4.5",
+    "uglify-js": "^3.3.8"
+  },
+  "devDependencies": {
+    "debug": "^3.1.0",
+    "jasmine-node": "^1.14.*",
+    "jshint": "^2.9.5",
+    "mocha": "^4.1.0",
+    "nodemon": "^1.14.11",
+    "should": "^13.2.1",
+    "watch": "^1.0.*"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "private": true
+}
